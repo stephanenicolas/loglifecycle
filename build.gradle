@@ -1,0 +1,63 @@
+apply plugin: 'java'
+apply plugin: 'nexus'
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
+  }
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  compile 'com.android.tools.build:gradle:0.12.2'
+  compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1-SNAPSHOT'
+  compile 'com.github.stephanenicolas.javassist:javassist-build-plugin-api:1.0.0-SNAPSHOT'
+  compile 'com.darylteo.gradle:javassist-plugin:0.2.2'
+  compile 'org.projectlombok:lombok:1.14.2'
+  compile 'com.google.android:android:4.4.2_r2'
+}
+
+group = GROUP
+version = VERSION_NAME
+
+apply plugin: 'maven'
+
+logging.captureStandardOutput LogLevel.INFO
+
+modifyPom {
+  project {
+    name "LogLifeCycle"
+    description POM_DESCRIPTION
+    url POM_URL
+
+    scm {
+      url POM_SCM_URL
+      connection POM_SCM_CONNECTION
+      developerConnection POM_SCM_DEV_CONNECTION
+    }
+
+    licenses {
+      license {
+        name POM_LICENCE_NAME
+        url POM_LICENCE_URL
+        distribution POM_LICENCE_DIST
+      }
+    }
+
+    developers {
+      developer {
+        id POM_DEVELOPER_ID
+        name POM_DEVELOPER_NAME
+      }
+    }
+  }
+}
