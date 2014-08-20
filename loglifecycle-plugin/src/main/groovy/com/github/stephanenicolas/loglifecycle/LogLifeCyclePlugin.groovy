@@ -17,7 +17,7 @@ public class LogLifeCyclePlugin extends AbstractMorpheusPlugin {
   @Override
   protected void configure(Project project) {
     project.dependencies {
-      provided 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.0'
+      provided 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.1-SNAPSHOT'
     }
   }
 
