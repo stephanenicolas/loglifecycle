@@ -53,7 +53,9 @@ public class LogLifeCycleProcessor implements IClassTransformer {
       if (methodName.startsWith("on")) {
         log.info("Overriding " + methodName);
         try {
-          afterBurner.afterOverrideMethod(classToTransform, methodName, "System.out.println(\"Inside " + methodName + " \");");
+          String body = String.format("android.util.Log.d(\"LogLifeCycle\",\"%s ⟳ %s\");",
+              classToTransform.getSimpleName(), methodName);
+          afterBurner.afterOverrideMethod(classToTransform, methodName, body);
         } catch (Exception e) {
           log.info("Override didn't work ", e);
         }
