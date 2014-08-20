@@ -46,12 +46,12 @@ You will find an example program in the repo.
 
 ###How does it work ?
 
-Thanks to [morpheus](https://github.com/stephanenicolas/morpheus), byte code weaver for android.
+Thanks to 
+* [morpheus](https://github.com/stephanenicolas/morpheus), byte code weaver for android.
+* [AfterBurner](https://github.com/stephanenicolas/afterburner), byte code weaving swiss army knife for Android.
 
 ###TODO
 * [ ] add tests
 * [ ] add CI + badge
 * [ ] release on central
 * [ ] add maven badge
-
-* 
