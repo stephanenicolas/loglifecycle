@@ -1,0 +1,52 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+project.afterEvaluate {
+
+  def release = !project.version.endsWith('-SNAPSHOT')
+  def sonatypeUsername = project.hasProperty('sonatypeUsername') ? project.sonatypeUsername : '';
+  def sonatypePassword = project.hasProperty('sonatypePassword') ? project.sonatypePassword: '';
+
+  configurations {
+    archives
+  }
+
+  task sourcesJar(type:Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+  }
+
+  task javadocJar(type:Jar) {
+    from javadoc
+    classifier = 'javadoc'
+  }
+
+  artifacts {
+    archives sourcesJar
+    archives javadocJar
+  }
+
+  signing {
+    required { release && gradle.taskGraph.hasTask('uploadArchives') }
+    sign configurations.archives
+  }
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        def url = !release ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+
+        repository(url: url) {
+          authentication(userName: sonatypeUsername, password : sonatypePassword)
+        }
+
+        beforeDeployment { dep ->
+          signing.signPom(dep)
+        }
+
+        uniqueVersion = false
+        configuration = configurations.archives
+      }
+    }
+  }
+}

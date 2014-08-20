@@ -19,3 +19,8 @@ local.properties
 #gradle
 .gradle
 build/
+
+#personal aliases
+example
+annotations
+

@@ -15,25 +15,58 @@ buildscript {
 
 repositories {
   mavenCentral()
+
+  //only needed to develop the lib
   mavenLocal()
 }
 
 dependencies {
 
   //compile 'com.android.tools.build:gradle:0.12.2'
-  compile 'com.github.stephanenicolas.javassist:javassist-build-plugin-api:1.0.0-SNAPSHOT'
+  compile 'com.github.stephanenicolas.javassist:javassist-build-plugin-api:1.0.0'
   //needed to create a processor based on afterburner
-  compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1-SNAPSHOT'
+  compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1'
 
   //only needed to create a plugin
-  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0-SNAPSHOT'
+  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0'
   compile gradleApi()
   compile localGroovy()
 
-  compile 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.0-SNAPSHOT'
+  compile 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.0'
 
 
   compile 'org.projectlombok:lombok:1.14.2'
   compile 'com.google.android:android:4.4.2_r2'
 }
+
+
+modifyPom {
+  project {
+    name "Loglifecycle Gradle Plugin"
+    description POM_DESCRIPTION
+    url POM_URL
+
+    scm {
+      url POM_SCM_URL
+      connection POM_SCM_CONNECTION
+      developerConnection POM_SCM_DEV_CONNECTION
+    }
+
+    licenses {
+      license {
+        name POM_LICENCE_NAME
+        url POM_LICENCE_URL
+        distribution POM_LICENCE_DIST
+      }
+    }
+
+    developers {
+      developer {
+        id POM_DEVELOPER_ID
+        name POM_DEVELOPER_NAME
+      }
+    }
+  }
+}
+
 

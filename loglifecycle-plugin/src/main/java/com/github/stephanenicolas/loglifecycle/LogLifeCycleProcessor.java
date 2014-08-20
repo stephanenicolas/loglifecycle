@@ -5,6 +5,8 @@ import android.app.Activity;
 import com.github.stephanenicolas.afterburner.AfterBurner;
 
 import com.github.stephanenicolas.afterburner.exception.AfterBurnerImpossibleException;
+import java.util.HashSet;
+import java.util.Set;
 import javassist.CannotCompileException;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
@@ -39,11 +41,24 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     try {
       log.info("Transforming " + classToTransform.getName());
       ClassPool pool = classToTransform.getClassPool();
-      debugLifeCycleMethods(classToTransform, pool.get(Activity.class.getName()).getMethods());
-      debugLifeCycleMethods(classToTransform, pool.get(Activity.class.getName()).getDeclaredMethods());
+      Set<CtMethod> methodSet = getAllMethods(pool, Activity.class);
+      debugLifeCycleMethods(classToTransform, methodSet.toArray(new CtMethod[methodSet.size()]));
     } catch (Exception e) {
       throw new JavassistBuildException(e);
     }
+  }
+
+  private Set<CtMethod> getAllMethods(ClassPool pool, Class<?> clazz) throws NotFoundException {
+    Set<CtMethod> methodSet = new HashSet<CtMethod>();
+    CtMethod[] inheritedMethods = pool.get(clazz.getName()).getMethods();
+    CtMethod[] declaredMethods = pool.get(clazz.getName()).getDeclaredMethods();
+    for (CtMethod method : inheritedMethods) {
+      methodSet.add(method);
+    }
+    for (CtMethod method : declaredMethods) {
+      methodSet.add(method);
+    }
+    return methodSet;
   }
 
   private void debugLifeCycleMethods(CtClass classToTransform, CtMethod[] methods)
