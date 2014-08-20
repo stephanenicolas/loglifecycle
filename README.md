@@ -46,4 +46,4 @@ You will find an example program in the repo.
 
 ###How does it work ?
 
-Thanks to [morpheus](https://github.com/stephanenicolas/loglifecycle), byte code weaver for android.
+Thanks to [morpheus](https://github.com/stephanenicolas/morpheus), byte code weaver for android.
