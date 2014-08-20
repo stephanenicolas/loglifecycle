@@ -30,7 +30,9 @@ dependencies {
   compile gradleApi()
   compile localGroovy()
 
-  //
+  compile 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.0-SNAPSHOT'
+
+
   compile 'org.projectlombok:lombok:1.14.2'
   compile 'com.google.android:android:4.4.2_r2'
 }
