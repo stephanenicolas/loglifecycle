@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 You will see something like this in logcat : 
 
 ```bash
-> adb logcat | grep LogLifecycle
+> adb logcat | grep ⟳
 
 D/LogLifeCycle( 3172): MainActivity ⟳ onCreate
 D/LogLifeCycle( 3172): MainActivity ⟳ onApplyThemeResource
