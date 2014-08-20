@@ -1,0 +1,37 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'nexus'
+
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
+  }
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+
+  //compile 'com.android.tools.build:gradle:0.12.2'
+  compile 'com.github.stephanenicolas.javassist:javassist-build-plugin-api:1.0.0-SNAPSHOT'
+  //needed to create a processor based on afterburner
+  compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1-SNAPSHOT'
+
+  //only needed to create a plugin
+  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0-SNAPSHOT'
+  compile gradleApi()
+  compile localGroovy()
+
+  //
+  compile 'org.projectlombok:lombok:1.14.2'
+  compile 'com.google.android:android:4.4.2_r2'
+}
+

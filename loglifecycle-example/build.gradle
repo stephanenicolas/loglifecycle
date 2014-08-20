@@ -1,0 +1,36 @@
+buildscript {
+  repositories {
+    mavenCentral()
+
+    // NOTE: This is only needed when developing the plugin!
+    mavenLocal()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.10.+'
+    classpath 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0-SNAPSHOT'
+    classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.0-SNAPSHOT'
+  }
+}
+
+apply plugin: 'android'
+apply plugin: 'loglifecycle'
+
+
+repositories {
+  mavenCentral()
+
+  // NOTE: This is only needed when developing the plugin!
+  mavenLocal()
+}
+
+android {
+  compileSdkVersion 20
+  buildToolsVersion '20.0.0'
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+
+}
