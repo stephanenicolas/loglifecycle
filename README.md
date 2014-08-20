@@ -47,3 +47,11 @@ You will find an example program in the repo.
 ###How does it work ?
 
 Thanks to [morpheus](https://github.com/stephanenicolas/morpheus), byte code weaver for android.
+
+###TODO
+* [ ] add tests
+* [ ] add CI + badge
+* [ ] release on central
+* [ ] add maven badge
+
+* 
