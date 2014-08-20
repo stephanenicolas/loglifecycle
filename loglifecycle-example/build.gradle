@@ -7,9 +7,9 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.10.+'
-    classpath 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0-SNAPSHOT'
-    classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.0-SNAPSHOT'
+    classpath 'com.android.tools.build:gradle:0.12.2'
+    classpath 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.0'
+    classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.0'
   }
 }
 
