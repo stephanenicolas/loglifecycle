@@ -8,7 +8,6 @@ import com.github.stephanenicolas.afterburner.exception.AfterBurnerImpossibleExc
 import java.util.HashSet;
 import java.util.Set;
 import javassist.CannotCompileException;
-import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -18,7 +17,7 @@ import javassist.build.JavassistBuildException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * A simple annotation processor.
+ * A class transformer to inject logging byte code for all life cycle methods.
  * @author SNI
  */
 @Slf4j
@@ -41,14 +40,14 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     try {
       log.info("Transforming " + classToTransform.getName());
       ClassPool pool = classToTransform.getClassPool();
-      Set<CtMethod> methodSet = getAllMethods(pool, Activity.class);
+      Set<CtMethod> methodSet = getAllLifeCycleMethods(pool, Activity.class);
       debugLifeCycleMethods(classToTransform, methodSet.toArray(new CtMethod[methodSet.size()]));
     } catch (Exception e) {
       throw new JavassistBuildException(e);
     }
   }
 
-  private Set<CtMethod> getAllMethods(ClassPool pool, Class<?> clazz) throws NotFoundException {
+  private Set<CtMethod> getAllLifeCycleMethods(ClassPool pool, Class<?> clazz) throws NotFoundException {
     Set<CtMethod> methodSet = new HashSet<CtMethod>();
     CtMethod[] inheritedMethods = pool.get(clazz.getName()).getMethods();
     CtMethod[] declaredMethods = pool.get(clazz.getName()).getDeclaredMethods();
@@ -66,13 +65,13 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     for (CtMethod lifeCycleHook : methods) {
       String methodName = lifeCycleHook.getName();
       if (methodName.startsWith("on")) {
-        log.info("Overriding " + methodName);
+        log.debug("Overriding " + methodName);
         try {
           String body = String.format("android.util.Log.d(\"LogLifeCycle\",\"%s ⟳ %s\");",
               classToTransform.getSimpleName(), methodName);
           afterBurner.afterOverrideMethod(classToTransform, methodName, body);
         } catch (Exception e) {
-          log.info("Override didn't work ", e);
+          log.debug("Override didn't work ", e);
         }
       }
     }
