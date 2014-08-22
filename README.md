@@ -1,4 +1,4 @@
-⟳ loglifecycle [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas/loglifecycle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas/loglifecycle)
+⟳ loglifecycle [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin)
 ============
 
 ***Logs all lifecycle methods of a given activity on Android.***
