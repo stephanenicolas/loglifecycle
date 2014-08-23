@@ -38,7 +38,7 @@ dependencies {
   compile gradleApi()
   compile localGroovy()
 
-  compile 'com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:1.0.1-SNAPSHOT'
+  compile "com.github.stephanenicolas.loglifecycle:loglifecycle-annotations:${version}"
 
 
   compile 'org.projectlombok:lombok:1.14.2'
