@@ -7,6 +7,7 @@ buildscript {
   dependencies {
     classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
     classpath 'com.android.tools.build:gradle:0.12.2'
+    classpath 'com.github.townsfolk:gradle-release:1.2'
   }
 }
 
@@ -18,10 +19,12 @@ allprojects {
   }
 
   group = GROUP
-  version = VERSION_NAME
 
   apply plugin: 'maven'
 }
+
+apply plugin: 'release'
+createReleaseTag.dependsOn uploadArchives
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.12'
