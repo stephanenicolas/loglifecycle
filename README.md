@@ -1,7 +1,7 @@
 ⟳ loglifecycle [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin)
 ============
 
-***Logs all lifecycle methods of a given activity on Android.***
+***Logs all lifecycle methods of a annotated activities, fragments, views, etc. on Android.***
 
 ###Usage
 
@@ -25,19 +25,23 @@ You will see something like this in logcat :
 ```bash
 > adb logcat | grep ⟳
 
-D/LogLifeCycle( 3172): MainActivity ⟳ onCreate
-D/LogLifeCycle( 3172): MainActivity ⟳ onApplyThemeResource
-D/LogLifeCycle( 3172): MainActivity ⟳ onWindowAttributesChanged
-D/LogLifeCycle( 3172): MainActivity ⟳ onWindowAttributesChanged
-D/LogLifeCycle( 3172): MainActivity ⟳ onWindowAttributesChanged
-D/LogLifeCycle( 3172): MainActivity ⟳ onContentChanged
-D/LogLifeCycle( 3172): MainActivity ⟳ onStart
-D/LogLifeCycle( 3172): MainActivity ⟳ onTitleChanged
-D/LogLifeCycle( 3172): MainActivity ⟳ onPostCreate
-D/LogLifeCycle( 3172): MainActivity ⟳ onResume
-D/LogLifeCycle( 3172): MainActivity ⟳ onPostResume
-D/LogLifeCycle( 3172): MainActivity ⟳ onAttachedToWindow
-D/LogLifeCycle( 3172): MainActivity ⟳ onWindowFocusChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onCreate
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onApplyThemeResource
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowAttributesChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowAttributesChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowAttributesChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onContentChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onAttachFragment
+D/LogLifeCycle( 4640): MainActivity$MainFragment [1384183528] ⟳ onCreate
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onStart
+D/LogLifeCycle( 4640): MainActivity$MainFragment [1384183528] ⟳ onStart
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onTitleChanged
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onPostCreate
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onResume
+D/LogLifeCycle( 4640): MainActivity$MainFragment [1384183528] ⟳ onResume
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onPostResume
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onAttachedToWindow
+D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowFocusChanged
 ```
 
 ###Example
