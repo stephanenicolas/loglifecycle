@@ -1,7 +1,7 @@
 ⟳ loglifecycle [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.stephanenicolas.loglifecycle/loglifecycle-plugin)
 ============
 
-***Logs all lifecycle methods of a annotated activities, fragments, views, etc. on Android.***
+***Logs all lifecycle methods of annotated activities, fragments, views, etc. on Android.***
 
 ###Usage
 
