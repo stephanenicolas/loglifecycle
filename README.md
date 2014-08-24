@@ -44,6 +44,10 @@ D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onAttachedToWindow
 D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowFocusChanged
 ```
 
+Extra features : 
+* release builds won't log anything, indeed the app is not modified at all in release builds.
+* this plugin will add only a few more bytes to your app : log statements, and the annotation class, nothing more.
+
 ### Support library support
 
 If your app uses support library, and you want to annotate a `android.support.v4.app.Fragment`, add the following statements to your `build.gradle` file : 
