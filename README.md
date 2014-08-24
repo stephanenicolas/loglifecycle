@@ -44,9 +44,35 @@ D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onAttachedToWindow
 D/LogLifeCycle( 4640): MainActivity [1384162984] ⟳ onWindowFocusChanged
 ```
 
+### Support library support
+
+If your app uses support library, and you want to annotate a `android.support.v4.app.Fragment`, add the following statements to your `build.gradle` file : 
+
+```groovy
+buildscript {
+  repositories {
+    ...
+    maven {
+      url "<your android sdk dir>/extras/android/m2repository/"
+    }
+  }
+
+  dependencies {
+    ...
+    classpath 'com.android.support:support-v4:19.1.0'
+  }
+}
+```
+
+Notes:
+
+* you *must* use version `19.1.0` or below. More recent versions of the support library are distributed in aar format, which is not usable in the buildscript section of gradle (as far as I know).
+* there is currently no generic way to get `ANDROID_HOME` value, and you *must* add it manually, so yes, this breaks
+build portability (among developers for instance).
+
 ###Example
 
-You will find an example program in the repo.
+You will find an example app using LogLifeCycle in the repo.
 
 ###How does it work ?
 
