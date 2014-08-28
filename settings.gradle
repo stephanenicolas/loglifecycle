@@ -1,1 +1,1 @@
-include ':loglifecycle-annotations', ':loglifecycle-plugin', ':loglifecycle-example'
+include ':loglifecycle-annotations', ':loglifecycle-plugin'
