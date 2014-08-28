@@ -4,30 +4,19 @@ buildscript {
 
     // NOTE: This is only needed when developing the plugin!
     mavenLocal()
-
-    // Work around https://code.google.com/p/android/issues/detail?id=69270.
-    def androidHome = System.getenv("ANDROID_HOME")
-    maven {
-      url "$androidHome/extras/android/m2repository/"
-    }
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:0.12.2'
-    classpath 'com.android.support:support-v4:19.1.0'
-    classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.1'
+    classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.2-SNAPSHOT'
   }
 }
 
 apply plugin: 'android'
 apply plugin: 'loglifecycle'
 
-
 repositories {
   mavenCentral()
-
-  // NOTE: This is only needed when developing the plugin!
-  mavenLocal()
 }
 
 android {
@@ -38,4 +27,8 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_7
     targetCompatibility JavaVersion.VERSION_1_7
   }
+}
+
+dependencies{
+    compile 'com.android.support:support-v4:19.1.+'
 }

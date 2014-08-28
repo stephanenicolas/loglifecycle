@@ -42,8 +42,6 @@ dependencies {
 
 
   compile 'org.projectlombok:lombok:1.14.2'
-  compile 'com.google.android:android:4.4.2_r2'
-  compile 'com.android.support:support-v4:19.1.0'
 }
 
 

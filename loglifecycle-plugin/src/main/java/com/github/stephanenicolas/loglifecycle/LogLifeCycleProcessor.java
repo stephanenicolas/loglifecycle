@@ -1,13 +1,5 @@
 package com.github.stephanenicolas.loglifecycle;
 
-import android.app.Activity;
-
-import android.app.Application;
-import android.app.Fragment;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
-import android.view.View;
 import com.github.stephanenicolas.afterburner.AfterBurner;
 
 import com.github.stephanenicolas.afterburner.exception.AfterBurnerImpossibleException;
@@ -20,6 +12,7 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 import javassist.build.IClassTransformer;
 import javassist.build.JavassistBuildException;
+import javassist.bytecode.AccessFlag;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -29,15 +22,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogLifeCycleProcessor implements IClassTransformer {
 
-  public final Class[] SUPPORTED_CLASSES = new Class[] {
-      Activity.class,
-      Fragment.class,
-      android.support.v4.app.Fragment.class,
-      View.class,
-      Service.class,
-      BroadcastReceiver.class,
-      ContentResolver.class,
-      Application.class
+  public final String[] SUPPORTED_CLASSES = new String[] {
+      "android.app.Activity",
+      "android.app.Fragment",
+      "android.support.v4.app.Fragment",
+      "android.view.View",
+      "android.app.Service",
+      "android.content.BroadcastReceiver",
+      "android.content.ContentResolver",
+      "android.app.Application"
   };
 
 	private AfterBurner afterBurner = new AfterBurner();
@@ -60,9 +53,9 @@ public class LogLifeCycleProcessor implements IClassTransformer {
 	}
 
   private boolean isSupported(CtClass candidateClass, ClassPool pool) {
-    for (Class<?> supportedClass : SUPPORTED_CLASSES) {
+    for (String supportedClass : SUPPORTED_CLASSES) {
       try {
-        if (candidateClass.subtypeOf(pool.get(supportedClass.getName()))) {
+        if (candidateClass.subtypeOf(pool.get(supportedClass))) {
           return true;
         }
       } catch (NotFoundException e) {
@@ -78,7 +71,7 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     try {
       log.info("Transforming " + classToTransformName);
       ClassPool pool = classToTransform.getClassPool();
-      Set<CtMethod> methodSet = getAllLifeCycleMethods(pool, Activity.class);
+      Set<CtMethod> methodSet = getAllLifeCycleMethods(pool, classToTransform.getName());
       debugLifeCycleMethods(classToTransform, methodSet.toArray(new CtMethod[methodSet.size()]));
     } catch (Exception e) {
       logMoreIfDebug("Transformation failed for class " + classToTransformName, e);
@@ -87,10 +80,11 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     log.info("Transformation successful for " + classToTransformName);
   }
 
-  private Set<CtMethod> getAllLifeCycleMethods(ClassPool pool, Class<?> clazz) throws NotFoundException {
+  private Set<CtMethod> getAllLifeCycleMethods(ClassPool pool, String className)
+      throws NotFoundException {
     Set<CtMethod> methodSet = new HashSet<CtMethod>();
-    CtMethod[] inheritedMethods = pool.get(clazz.getName()).getMethods();
-    CtMethod[] declaredMethods = pool.get(clazz.getName()).getDeclaredMethods();
+    CtMethod[] inheritedMethods = pool.get(className).getMethods();
+    CtMethod[] declaredMethods = pool.get(className).getDeclaredMethods();
     for (CtMethod method : inheritedMethods) {
       methodSet.add(method);
     }
@@ -105,7 +99,12 @@ public class LogLifeCycleProcessor implements IClassTransformer {
     for (CtMethod lifeCycleHook : methods) {
       String methodName = lifeCycleHook.getName();
       String className = classToTransform.getName();
-      if (methodName.startsWith("on")) {
+
+      int accessFlags = lifeCycleHook.getMethodInfo().getAccessFlags();
+      boolean isFinal = (accessFlags & AccessFlag.FINAL) == AccessFlag.FINAL;
+      boolean canOverride = !isFinal && (AccessFlag.isPublic(accessFlags) || AccessFlag.isProtected(accessFlags));
+
+      if (canOverride && methodName.startsWith("on")) {
         log.info("Overriding " + methodName);
         try {
 
