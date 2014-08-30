@@ -102,7 +102,7 @@ public class LogLifeCycleProcessor implements IClassTransformer {
 
       int accessFlags = lifeCycleHook.getMethodInfo().getAccessFlags();
       boolean isFinal = (accessFlags & AccessFlag.FINAL) == AccessFlag.FINAL;
-      boolean canOverride = !isFinal && (AccessFlag.isPublic(accessFlags) || AccessFlag.isProtected(accessFlags));
+      boolean canOverride = !isFinal && (AccessFlag.isPublic(accessFlags) || AccessFlag.isProtected(accessFlags) || AccessFlag.isPackage(accessFlags));
 
       if (canOverride && methodName.startsWith("on")) {
         log.info("Overriding " + methodName);
@@ -118,6 +118,8 @@ public class LogLifeCycleProcessor implements IClassTransformer {
         } catch (Exception e) {
           logMoreIfDebug("Override didn't work ", e);
         }
+      } else {
+        log.info("Skipping " + methodName + ". Either it is final, private or doesn't start by 'on...'");
       }
     }
   }

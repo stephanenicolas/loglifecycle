@@ -34,7 +34,7 @@ dependencies {
   compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1'
 
   //only needed to create a plugin
-  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.1'
+  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.8-snapshot'
   compile gradleApi()
   compile localGroovy()
 

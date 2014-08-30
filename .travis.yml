@@ -1,0 +1,31 @@
+language: java
+jdk: oraclejdk7
+branches:
+  only:
+    - master
+before_install:
+    # Install base Android SDK and components
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq libstdc++6:i386 lib32z1 expect
+    - export COMPONENTS=build-tools-19.0.3,android-19,extra-android-support,extra-android-m2repository,extra-google-m2repository
+    - export LICENSES=android-sdk-license-bcbbd656
+    - curl -3L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS --accept=$LICENSES
+    - source ~/.android-sdk-installer/env
+
+install:
+    # Without TERM=dumb, we get mangled output in the Travis console
+    - TERM=dumb ./gradlew clean assemble
+
+script:
+    - TERM=dumb ./gradlew check
+
+env:
+  global:
+    - TERM=dumb
+
+notifications:
+  email: false
+
+#from http://blog.ansuz.nl/index.php/2014/06/01/robolectric-and-cobertura-with-gradle/
+after_success:
+    - ./gradlew clean cobertura coveralls -d
