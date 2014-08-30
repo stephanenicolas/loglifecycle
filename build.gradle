@@ -23,7 +23,7 @@ allprojects {
 }
 
 apply plugin: 'release'
-createReleaseTag.dependsOn uploadArchives
+createReleaseTag.dependsOn ':loglifecycle-annotations:uploadArchives', ':loglifecycle-plugin:uploadArchives'
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.12'
