@@ -5,7 +5,7 @@ Version 1.0.2 (released on August 30th 2014)
 * minor fixes and better logs.
 * LogLifeCycle now check if methods can be overriden.
 * CI
-* TODO tests
+* Added tests and coverage
 
 Version 1.0.1 (released on August 23rd 2014)
 -------------
