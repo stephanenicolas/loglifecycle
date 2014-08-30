@@ -1,7 +1,3 @@
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'nexus'
-
 buildscript {
   repositories {
     mavenCentral()
@@ -13,17 +9,15 @@ buildscript {
   }
 }
 
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'nexus'
+
 repositories {
   mavenCentral()
 
   //only needed to develop the lib
   mavenLocal()
-
-  // Work around https://code.google.com/p/android/issues/detail?id=69270.
-  def androidHome = System.getenv("ANDROID_HOME")
-  maven {
-    url "$androidHome/extras/android/m2repository/"
-  }
 }
 
 dependencies {
@@ -34,16 +28,14 @@ dependencies {
   compile 'com.github.stephanenicolas.afterburner:afterburner-library:1.0.1'
 
   //only needed to create a plugin
-  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.8-snapshot'
+  compile 'com.github.stephanenicolas.morpheus:morpheus-plugin:1.0.7'
   compile gradleApi()
   compile localGroovy()
 
   compile project(':loglifecycle-annotations')
 
-
   compile 'org.projectlombok:lombok:1.14.2'
 }
-
 
 modifyPom {
   project {
