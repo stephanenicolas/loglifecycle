@@ -17,23 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * A class transformer to inject logging byte code for all life cycle methods.
+ *
  * @author SNI
  */
 @Slf4j
 public class LogLifeCycleProcessor implements IClassTransformer {
 
   public final String[] SUPPORTED_CLASSES = new String[] {
-      "android.app.Activity",
-      "android.app.Fragment",
-      "android.support.v4.app.Fragment",
-      "android.view.View",
-      "android.app.Service",
-      "android.content.BroadcastReceiver",
-      "android.content.ContentResolver",
-      "android.app.Application"
+      "android.app.Activity", "android.app.Fragment", "android.support.v4.app.Fragment",
+      "android.view.View", "android.app.Service", "android.content.BroadcastReceiver",
+      "android.content.ContentResolver", "android.app.Application"
   };
 
-	private AfterBurner afterBurner = new AfterBurner();
+  private AfterBurner afterBurner = new AfterBurner();
   private boolean debug;
 
   public LogLifeCycleProcessor(boolean debug) {
@@ -42,15 +38,15 @@ public class LogLifeCycleProcessor implements IClassTransformer {
 
   @Override
   public boolean shouldTransform(CtClass candidateClass) throws JavassistBuildException {
-		try {
+    try {
       ClassPool pool = candidateClass.getClassPool();
       boolean isSupported = isSupported(candidateClass, pool);
-			return isSupported &&  candidateClass.hasAnnotation(LogLifeCycle.class);
-		} catch (Exception e) {
+      return isSupported && candidateClass.hasAnnotation(LogLifeCycle.class);
+    } catch (Exception e) {
       logMoreIfDebug("Should transform filter failed for class " + candidateClass.getName(), e);
       throw new JavassistBuildException(e);
-		}
-	}
+    }
+  }
 
   private boolean isSupported(CtClass candidateClass, ClassPool pool) {
     for (String supportedClass : SUPPORTED_CLASSES) {
@@ -66,7 +62,7 @@ public class LogLifeCycleProcessor implements IClassTransformer {
   }
 
   @Override
-	public void applyTransformations(CtClass classToTransform)  throws JavassistBuildException {
+  public void applyTransformations(CtClass classToTransform) throws JavassistBuildException {
     String classToTransformName = classToTransform.getName();
     try {
       log.info("Transforming " + classToTransformName);
@@ -102,7 +98,9 @@ public class LogLifeCycleProcessor implements IClassTransformer {
 
       int accessFlags = lifeCycleHook.getMethodInfo().getAccessFlags();
       boolean isFinal = (accessFlags & AccessFlag.FINAL) == AccessFlag.FINAL;
-      boolean canOverride = !isFinal && (AccessFlag.isPublic(accessFlags) || AccessFlag.isProtected(accessFlags) || AccessFlag.isPackage(accessFlags));
+      boolean canOverride = !isFinal && (AccessFlag.isPublic(accessFlags)
+          || AccessFlag.isProtected(accessFlags)
+          || AccessFlag.isPackage(accessFlags));
 
       if (canOverride && methodName.startsWith("on")) {
         log.info("Overriding " + methodName);
@@ -110,7 +108,7 @@ public class LogLifeCycleProcessor implements IClassTransformer {
 
           String body = "android.util.Log.d(\"LogLifeCycle\", \""
               + className
-              +" [\" + System.identityHashCode(this) + \"] \u27F3 "
+              + " [\" + System.identityHashCode(this) + \"] \u27F3 "
               + methodName
               + "\");";
           afterBurner.afterOverrideMethod(classToTransform, methodName, body);
@@ -119,7 +117,8 @@ public class LogLifeCycleProcessor implements IClassTransformer {
           logMoreIfDebug("Override didn't work ", e);
         }
       } else {
-        log.info("Skipping " + methodName + ". Either it is final, private or doesn't start by 'on...'");
+        log.info(
+            "Skipping " + methodName + ". Either it is final, private or doesn't start by 'on...'");
       }
     }
   }
