@@ -1,7 +1,6 @@
 package com.github.stephanenicolas.loglifecycle;
 
 import com.github.stephanenicolas.afterburner.AfterBurner;
-
 import com.github.stephanenicolas.afterburner.exception.AfterBurnerImpossibleException;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +14,15 @@ import javassist.build.JavassistBuildException;
 import javassist.bytecode.AccessFlag;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isActivity;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isApplication;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isBroadCastReceiver;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isContentProvider;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isFragment;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isService;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isSupportFragment;
+import static com.github.stephanenicolas.morpheus.commons.JavassistUtils.isView;
+
 /**
  * A class transformer to inject logging byte code for all life cycle methods.
  *
@@ -22,12 +30,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class LogLifeCycleProcessor implements IClassTransformer {
-
-  public final String[] SUPPORTED_CLASSES = new String[] {
-      "android.app.Activity", "android.app.Fragment", "android.support.v4.app.Fragment",
-      "android.view.View", "android.app.Service", "android.content.BroadcastReceiver",
-      "android.content.ContentResolver", "android.app.Application"
-  };
 
   private AfterBurner afterBurner = new AfterBurner();
   private boolean debug;
@@ -39,26 +41,23 @@ public class LogLifeCycleProcessor implements IClassTransformer {
   @Override
   public boolean shouldTransform(CtClass candidateClass) throws JavassistBuildException {
     try {
-      ClassPool pool = candidateClass.getClassPool();
-      boolean isSupported = isSupported(candidateClass, pool);
-      return isSupported && candidateClass.hasAnnotation(LogLifeCycle.class);
+      boolean isSupported = isSupported(candidateClass);
+      return candidateClass.hasAnnotation(LogLifeCycle.class) && isSupported;
     } catch (Exception e) {
       logMoreIfDebug("Should transform filter failed for class " + candidateClass.getName(), e);
       throw new JavassistBuildException(e);
     }
   }
 
-  private boolean isSupported(CtClass candidateClass, ClassPool pool) {
-    for (String supportedClass : SUPPORTED_CLASSES) {
-      try {
-        if (candidateClass.subtypeOf(pool.get(supportedClass))) {
-          return true;
-        }
-      } catch (NotFoundException e) {
-        //nothing to do
-      }
-    }
-    return false;
+  private boolean isSupported(CtClass candidateClass) throws NotFoundException {
+    return isActivity(candidateClass)
+        || isFragment(candidateClass)
+        || isSupportFragment(candidateClass)
+        || isView(candidateClass)
+        || isService(candidateClass)
+        || isBroadCastReceiver(candidateClass)
+        || isContentProvider(candidateClass)
+        || isApplication(candidateClass);
   }
 
   @Override
