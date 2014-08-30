@@ -95,7 +95,11 @@ On the same principle of byte code weaving :
 
 ###TODO
 * [ ] add tests
-* [ ] add CI + badge
+
+### CI 
+
+[![Travis Build](https://travis-ci.org/stephanenicolas/loglifecycle.svg?branch=master)](https://travis-ci.org/stephanenicolas/loglifecycle)
+[![Coverage Status](https://img.shields.io/coveralls/stephanenicolas/loglifecycle.svg)](https://coveralls.io/r/stephanenicolas/loglifecycle)
 
 License
 -------
