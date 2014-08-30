@@ -6,18 +6,30 @@ buildscript {
 
   dependencies {
     classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
+    classpath ("net.saliman:gradle-cobertura-plugin:2.2.4")
+    classpath ("org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2")
   }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'nexus'
+apply plugin: 'cobertura'
+apply plugin: 'com.github.kt3k.coveralls'
 
 repositories {
   mavenCentral()
 
   //only needed to develop the lib
   mavenLocal()
+
+  //for robolectric fork and support
+  maven {
+    url 'maven_3rd_party'
+  }
+
+  //to get snapshots
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
@@ -35,6 +47,38 @@ dependencies {
   compile project(':loglifecycle-annotations')
 
   compile 'org.projectlombok:lombok:1.14.2'
+  compile "com.google.android:android:${ANDROID_VERSION}"
+
+  //--TESTS
+  testCompile "junit:junit:$JUNIT_VERSION"
+  testCompile "org.bouncycastle:bcprov-jdk15:$BOUNCYCASTLE_VERSION"
+
+  testCompile("org.robolectric:robolectric:$ROBOLECTRIC_VERSION") {
+    exclude module: 'classworlds'
+    exclude module: 'maven-artifact'
+    exclude module: 'maven-artifact-manager'
+    exclude module: 'maven-error-diagnostics'
+    exclude module: 'maven-model'
+    exclude module: 'maven-plugin-registry'
+    exclude module: 'maven-profile'
+    exclude module: 'maven-project'
+    exclude module: 'maven-settings'
+    exclude module: 'nekohtml'
+    exclude module: 'plexus-container-default'
+    exclude module: 'plexus-interpolation'
+    exclude module: 'plexus-utils'
+    exclude module: 'wagon-file'
+    exclude module: 'wagon-http-lightweight'
+    exclude module: 'wagon-http-shared'
+    exclude module: 'wagon-provider-api'
+    exclude module: 'commons-logging'
+    exclude module: 'httpclient'
+    exclude group: 'com.google.android'
+  }
+  testCompile("org.apache.httpcomponents:httpclient:$HTTP_CLIENT_VERSION")
+  testCompile("commons-logging:commons-logging:$COMMONS_LOGGING_VERSION")
+  testCompile("com.google.android:android-test:$ANDROID_VERSION")
+  testCompile "org.easymock:easymock:$EASY_MOCK_VERSION"
 }
 
 modifyPom {
@@ -66,4 +110,16 @@ modifyPom {
   }
 }
 
+check.dependsOn test
+install.dependsOn check
 
+//as we want to have non test classes in test source tree
+//http://stackoverflow.com/a/14947906/693752
+tasks.withType(Test) {
+  scanForTestClasses = false
+  include "**/*Test.class"
+}
+
+cobertura.coverageFormats = ['html', 'xml'] // coveralls plugin depends on xml format report
+cobertura.auxiliaryClasspath += project.files('../loglifecycle-annotations/build/classes/')
+cobertura.coverageIncludes = ['.*com.github.stephanenicolas.loglifecycle.LogLifeCycleProcessor']
