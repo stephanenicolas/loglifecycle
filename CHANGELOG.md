@@ -1,4 +1,4 @@
-Version 1.0.2 (released on August 30th 2014)
+Version 1.0.3 (released on August 30th 2014)
 -------------
 
 * Thx to Riccardo Ciovati for helping make the plugin work out of the box.
@@ -6,6 +6,9 @@ Version 1.0.2 (released on August 30th 2014)
 * LogLifeCycle now check if methods can be overriden.
 * CI
 * Added tests and coverage
+
+Version 1.0.2 (Failed release)
+-------------
 
 Version 1.0.1 (released on August 23rd 2014)
 -------------
