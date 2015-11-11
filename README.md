@@ -8,6 +8,11 @@
 Inside your `build.gradle` file, add : 
 
 ```groovy
+buildscript {
+    dependencies {
+        classpath 'com.github.stephanenicolas.loglifecycle:loglifecycle-plugin:1.0.3' 
+    }
+}
 apply plugin: 'loglifecycle'
 ```
 
